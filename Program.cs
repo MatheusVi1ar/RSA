@@ -22,7 +22,7 @@ namespace RSA
 
             string descricao = "";
             string criptografado = "";
-            string descriptografado = "";
+            string decriptografado = "";
 
             do
             {
@@ -83,7 +83,7 @@ namespace RSA
                     criptografado = Criptografar(descricao, e, n);
 
                     //Decriptografar: Chave Privada(d, N)
-                    descriptografado = Descriptografar(criptografado, d, n);
+                    decriptografado = Decriptografar(criptografado, d, n);
 
                     string x = "1";
                 }
@@ -114,7 +114,7 @@ namespace RSA
             Console.WriteLine("\n");
             Console.WriteLine(String.Format("criptografado: {0}", criptografado));
             Console.WriteLine("\n");
-            Console.WriteLine(String.Format("descriptografado: {0}", descriptografado));
+            Console.WriteLine(String.Format("decriptografado: {0}", decriptografado));
             Console.WriteLine("\n");
 
             Console.ReadLine();
@@ -169,18 +169,18 @@ namespace RSA
             return criptografado;
         }
 
-        public static string Descriptografar(string criptografado, int d, int n)
+        public static string Decriptografar(string criptografado, int d, int n)
         {
-            string descriptografado = "";
+            string decriptografado = "";
 
             foreach (char c in criptografado)
             {
                 BigInteger aux = BigInteger.Pow(c, d);
                 BigInteger unicode = aux % n;
                 char character = (char)(unicode);
-                descriptografado += character.ToString();
+                decriptografado += character.ToString();
             }
-            return descriptografado;
+            return decriptografado;
         }
     }
 }
