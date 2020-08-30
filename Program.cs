@@ -11,6 +11,11 @@ namespace RSA
     {
         static void Main(string[] args)
         {
+            while (RSA()) ;
+        }
+
+        static bool RSA()
+        {
             BigInteger n;
             int e, d, fi_n, p, q;
             string descricao, criptografado, decriptografado;
@@ -39,30 +44,41 @@ namespace RSA
                 //um único divisor comum entre eles!
                 e = 2;
 
+                bool NaoAchouMMC = false;
                 while (e < fi_n)
-                {                    
+                {
                     if (MMC(e, fi_n) == 1)
                     {
+                        NaoAchouMMC = false;
                         break;
                     }
                     e++;
                 };
+
+                //Se não encontrou um MMC reseta o método
+                if (NaoAchouMMC)
+                    return true;
 
                 //Etapa 4: e.d mod Φ(N) =1
                 d = 1;
                 do
                 {
                     d++;
-                } while ((e*d)%fi_n != 1);
+                } while ((e * d) % fi_n != 1);
 
                 //Descrição: No alfabeto de A – Z a letra “C” equivale a 3ª letra, podemos atribuir o valor 3 em decimal.Deste modo, podemos criptografar a letra C usando o algoritmo RSA.                        
                 descricao = "The information security is of significant importance to ensure the privacy of communications";
+
+                //Se n for menor do que o tamanho da descrição não criptografa corretamente
+                if (n <= descricao.Length)
+                    return true;
 
                 //Criptografar: Chave Pública(e, N)
                 criptografado = Criptografar(descricao, e, n);
 
                 //Decriptografar: Chave Privada(d, N)
                 decriptografado = Decriptografar(criptografado, d, n);
+
 
 
                 Console.WriteLine("Definir p e q");
@@ -86,13 +102,13 @@ namespace RSA
                 Console.WriteLine(String.Format("criptografado: {0}", criptografado));
                 Console.WriteLine("\n");
                 Console.WriteLine(String.Format("decriptografado: {0}", decriptografado));
-                Console.WriteLine("\n");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
             Console.ReadLine();
+            return false;
         }
 
         static BigInteger MMC(int a, int h)
